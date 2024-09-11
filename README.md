@@ -40,7 +40,7 @@ Setelah semua langkah selesai, lakukan git add, commit, dan push ke GitHub serta
 
 ## Buatlah bagan yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara `urls.py`, `views.py`, `models.py`, dan berkas `html`.##
 
-![Bagan Django](components\bagan_django.jpeg)
+![Bagan Django](https://github.com/shaneemichael/fresh-bite/blob/main/components/bagan_django.jpeg)
 
 Penjelasan:
 Permintaan dari klien pertama kali diproses oleh urls.py, yang akan mencocokkan URL tersebut dengan fungsi view yang tepat di views.py. Di dalam views.py, logika aplikasi dijalankan dan jika diperlukan data dari database, fungsi view akan memanggil model yang ada di models.py. Setelah data diambil, view akan menyiapkan template HTML dengan data tersebut dan merendernya. Akhirnya, halaman web atau respons JSON dikirim kembali ke browser klien.
@@ -88,7 +88,6 @@ Model pada Django disebut sebagai ORM (Object-Relational Mapping) karena berfung
    - Django ORM juga memungkinkan pengelolaan relasi antar tabel seperti One-to-Many, Many-to-Many, dan One-to-One. Misalnya, relasi antara produk dan kategori dalam sebuah toko online bisa diatur menggunakan ForeignKey atau ManyToManyField.
 
 Contoh sederhana model dalam Django:
-
 from django.db import models
 
 class Product(models.Model):
