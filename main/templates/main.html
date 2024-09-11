@@ -1,8 +1,117 @@
-<h1>Mental Health Tracker</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freshbite2go - Vegetable Wraps</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+        h1 {
+            margin: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+        }
+        .wrap-item {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 20px 0;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+        }
+        .wrap-image {
+            max-width: 150px;
+            margin-right: 20px;
+        }
+        .wrap-image img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+        .wrap-details {
+            flex: 1;
+        }
+        .wrap-details h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .wrap-details p {
+            margin: 5px 0;
+            color: #777;
+        }
+        .price {
+            font-size: 1.2em;
+            color: #4CAF50;
+        }
+        .add-to-cart {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .add-to-cart:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
 
-<h5>NPM: </h5>
-<p>2306123456</p> <!-- Ubah sesuai dengan npm kamu -->
-<h5>Name: </h5>
-<p>Pak Bepe</p> <!-- Ubah sesuai dengan nama kamu -->
-<h5>Class: </h5>
-<p>PBP E</p> <!-- Ubah sesuai dengan kelas kamu -->
+<header>
+    <h1>Welcome to Freshbite2go</h1>
+</header>
+
+<div class="container">
+    <div class="wrap-item">
+        <div class="wrap-image">
+            <img src="veggie-wrap1.jpg" alt="Classic Veggie Wrap">
+        </div>
+        <div class="wrap-details">
+            <h3>Classic Veggie Wrap</h3>
+            <p>Fresh veggies wrapped in a soft whole-grain tortilla. Includes lettuce, tomatoes, cucumbers, and hummus.</p>
+            <p class="price">$7.99</p>
+            <button class="add-to-cart">Add to Cart</button>
+        </div>
+    </div>
+
+    <div class="wrap-item">
+        <div class="wrap-image">
+            <img src="veggie-wrap2.jpg" alt="Spicy Tofu Wrap">
+        </div>
+        <div class="wrap-details">
+            <h3>Spicy Tofu Wrap</h3>
+            <p>Grilled tofu with spicy sriracha sauce, fresh veggies, and avocado, wrapped in a spinach tortilla.</p>
+            <p class="price">$8.99</p>
+            <button class="add-to-cart">Add to Cart</button>
+        </div>
+    </div>
+
+    <div class="wrap-item">
+        <div class="wrap-image">
+            <img src="veggie-wrap3.jpg" alt="Greek Veggie Wrap">
+        </div>
+        <div class="wrap-details">
+            <h3>Greek Veggie Wrap</h3>
+            <p>A Mediterranean-inspired wrap with olives, feta, cucumbers, and tzatziki sauce.</p>
+            <p class="price">$8.49</p>
+            <button class="add-to-cart">Add to Cart</button>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
