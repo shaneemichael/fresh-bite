@@ -88,9 +88,10 @@ Model pada Django disebut sebagai ORM (Object-Relational Mapping) karena berfung
    - Django ORM juga memungkinkan pengelolaan relasi antar tabel seperti One-to-Many, Many-to-Many, dan One-to-One. Misalnya, relasi antara produk dan kategori dalam sebuah toko online bisa diatur menggunakan ForeignKey atau ManyToManyField.
 
 Contoh sederhana model dalam Django:
+
 from django.db import models
 
 class Product(models.Model):
-    name = models.CharField(max_length=100)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    description = models.TextField()
+   name = models.CharField(max_length=100)
+   price = models.DecimalField(max_digits=10, decimal_places=2)
+   description = models.TextField()
