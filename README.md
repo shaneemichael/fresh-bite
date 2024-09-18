@@ -145,3 +145,8 @@ Berikut cara serangan CSRF dapat dieksekusi jika csrf_token tidak diterapkan:
    - Routing URL form input dengan menambahkan path URL tersebut ke urlpatterns di dalam urls.py
 3) Tambah 4 fungsi views baru untuk melihat entry dalam format yang berbeda, yaitu show_xml, show_json, show_xml_by_id, show_json_by_id
 4) Membuat routing URL dan masukkan ke urlpatterns dalam urls.py
+
+![show_xml](https://github.com/shaneemichael/fresh-bite/blob/main/components/show_xml.png)
+![show_json](https://github.com/shaneemichael/fresh-bite/blob/main/components/show_json.png)
+![show_xml_by_id](https://github.com/shaneemichael/fresh-bite/blob/main/components/show_xml_by_id.png)
+![show_json_by_id](https://github.com/shaneemichael/fresh-bite/blob/main/components/show_json_by_id.png)
