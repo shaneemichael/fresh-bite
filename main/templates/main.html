@@ -4,117 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Freshbite2go - Vegetable Wraps</title>
+</head>
+<body class = "product_list">
+    {% extends 'base.html' %}
+    {% block content %}
+    {% if not product_entries %}
+    <p class = "empty-menu">Belum ada data produk pada Freshbite2go :D</p>
+    {% else %}
+    <table>
+    <tr class = "product-list">
+        <th>Product Name</th>
+        <th>Price</th>
+        <th>Description</th>
+    </tr>
+
+    {% comment %} Berikut cara memperlihatkan data mood di bawah baris ini 
+    {% endcomment %} 
+    {% for product_entry in product_entries %}
+    <tr class = "product-list">
+        <td>{{product_entry.name}}</td>
+        <td>{{product_entry.price}}</td>
+        <td>{{product_entry.description}}</td>
+    </tr>
+    {% endfor %}
+    </table>
+    {% endif %}
+
+    <br />
+
+    <a href="{% url 'main:create_product_entry' %}">
+    <button class = "add-product">
+    Add New Product</button>
+    </a>
+
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
+        .empty-menu {
+            font: sans-serif; font-size: 30px; color: #175E17;
         }
-        header {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 0;
-            text-align: center;
+        .product_list {
+            display: flex; flex-direction: column; align-items: center; margin: 0 auto; background-color: #B2D2A4;
+            margin: 5px 20px; color: #175E17; font-size: 20px;
         }
-        h1 {
-            margin: 0;
+        .add-product {
+            background-color: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 25px; font-size: 16px; 
+            cursor: pointer; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: background-color 0.3s ease, transform 0.3s ease;
         }
-        .container {
-            width: 80%;
-            margin: 20px auto;
-        }
-        .wrap-item {
-            background-color: white;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            margin: 20px 0;
-            padding: 15px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            display: flex;
-        }
-        .wrap-image {
-            max-width: 150px;
-            margin-right: 20px;
-        }
-        .wrap-image img {
-            max-width: 100%;
-            border-radius: 8px;
-        }
-        .wrap-details {
-            flex: 1;
-        }
-        .wrap-details h3 {
-            margin-top: 0;
-            color: #333;
-        }
-        .wrap-details p {
-            margin: 5px 0;
-            color: #777;
-        }
-        .price {
-            font-size: 1.2em;
-            color: #4CAF50;
-        }
-        .add-to-cart {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .add-to-cart:hover {
-            background-color: #45a049;
+        .add-product:hover {
+            background-color: #45a049; /* Change background color when hovered */
+            transform: translateY(-3px); /* Slightly lift the button */
+          }
+        .add-product:focus, 
+        .add-product:active {
+        outline: none; /* Remove default focus outline */
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); /* Add a stronger shadow on click */
+        transform: translateY(-2px); /* Make it pop when clicked */
         }
     </style>
-</head>
-<body>
-
-<header>
-    <h1>Welcome to Freshbite2go</h1>
-    <h4>Created by: Shane Michael Tanata Tendy</h4>
-    <h4>NPM: 2306259976</h4>
-    <h4>Kelas: PBP E</h4>
-</header>
-
-<div class="container">
-    <div class="wrap-item">
-        <div class="wrap-image">
-            <img src="https://github.com/shaneemichael/fresh-bite/blob/main/components/classic_veggie_wraps.jpg?raw=true" alt="Classic Veggie Wrap">
-        </div>
-        <div class="wrap-details">
-            <h3>Classic Veggie Wrap</h3>
-            <p>Fresh veggies wrapped in a soft whole-grain tortilla. Includes lettuce, tomatoes, cucumbers, and hummus.</p>
-            <p class="price">$7.99</p>
-            <button class="add-to-cart">Add to Cart</button>
-        </div>
-    </div>
-
-    <div class="wrap-item">
-        <div class="wrap-image">
-            <img src="https://github.com/shaneemichael/fresh-bite/blob/main/components/spicy_tofu_wraps.jpg?raw=true" alt="Spicy Tofu Wrap">
-        </div>
-        <div class="wrap-details">
-            <h3>Spicy Tofu Wrap</h3>
-            <p>Grilled tofu with spicy sriracha sauce, fresh veggies, and avocado, wrapped in a spinach tortilla.</p>
-            <p class="price">$8.99</p>
-            <button class="add-to-cart">Add to Cart</button>
-        </div>
-    </div>
-
-    <div class="wrap-item">
-        <div class="wrap-image">
-            <img src="https://github.com/shaneemichael/fresh-bite/blob/main/components/greek_veggie_wraps.jpeg?raw=true" alt="Greek Veggie Wrap">
-        </div>
-        <div class="wrap-details">
-            <h3>Greek Veggie Wrap</h3>
-            <p>A Mediterranean-inspired wrap with olives, feta, cucumbers, and tzatziki sauce.</p>
-            <p class="price">$8.49</p>
-            <button class="add-to-cart">Add to Cart</button>
-        </div>
-    </div>
-</div>
-
+{% endblock content %}
 </body>
 </html>

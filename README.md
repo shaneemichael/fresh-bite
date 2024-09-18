@@ -1,4 +1,6 @@
-## Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).##
+#### Link PWS: http:// ####
+# Tugas Individu 2 #
+#### Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).####
 
 1) **Membuat Proyek Django Baru:**
    - Buat direktori lokal bernama `fresh-bite` lalu aktifkan virtual environment di dalam direktori tersebut.
@@ -38,14 +40,14 @@
 
 Setelah semua langkah selesai, lakukan git add, commit, dan push ke GitHub serta PWS. Jangan lupa untuk mematikan virtual environment setelah pekerjaan selesai.
 
-## Buatlah bagan yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara `urls.py`, `views.py`, `models.py`, dan berkas `html`.##
+#### Buatlah bagan yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara `urls.py`, `views.py`, `models.py`, dan berkas `html`.####
 
 ![Bagan Django](https://github.com/shaneemichael/fresh-bite/blob/main/components/bagan_django.jpeg)
 
 Penjelasan:
 Permintaan dari klien pertama kali diproses oleh urls.py, yang akan mencocokkan URL tersebut dengan fungsi view yang tepat di views.py. Di dalam views.py, logika aplikasi dijalankan dan jika diperlukan data dari database, fungsi view akan memanggil model yang ada di models.py. Setelah data diambil, view akan menyiapkan template HTML dengan data tersebut dan merendernya. Akhirnya, halaman web atau respons JSON dikirim kembali ke browser klien.
 
-## Jelaskan fungsi git dalam pengembangan perangkat lunak!##
+#### Jelaskan fungsi git dalam pengembangan perangkat lunak!####
 
 Fungsi Git:
 1) Melacak perubahan kode
@@ -60,7 +62,7 @@ Fungsi Git:
    - Git sering digunakan bersama dengan alat Continuous Integration (CI) dan Continuous Deployment (CD) untuk mengotomatisasi proses pengujian dan deployment. Setiap kali kode di-push ke repositori, tes otomatis dapat dijalankan dan aplikasi bisa langsung di-deploy.
 
 
-## Menurut Anda, dari semua framework yang ada, mengapa framework Django dijadikan permulaan pembelajaran pengembangan perangkat lunak? ##
+#### Menurut Anda, dari semua framework yang ada, mengapa framework Django dijadikan permulaan pembelajaran pengembangan perangkat lunak? ####
 
 1) Open source:
    - Django adalah framework open source, yang berarti siapa saja bisa menggunakannya secara gratis. Ini didukung oleh komunitas yang besar dan aktif, yang terus memperbarui dan meningkatkan Django. Banyak dokumentasi, tutorial, dan paket tambahan tersedia secara bebas.
@@ -75,7 +77,7 @@ Fungsi Git:
 6) Incredibly Versatile:
    - Django sangat fleksibel dan bisa digunakan untuk berbagai jenis aplikasi web, seperti situs web konten, aplikasi e-commerce, platform sosial API backend (REST dan GraphQL) Django juga mendukung integrasi dengan berbagai teknologi seperti REST API, WebSockets, atau GraphQL, sehingga bisa digunakan untuk berbagai keperluan pengembangan.
 
-## Mengapa model pada Django disebut sebagai ORM? ##
+#### Mengapa model pada Django disebut sebagai ORM? ####
 
 Model pada Django disebut sebagai ORM (Object-Relational Mapping) karena berfungsi sebagai jembatan antara objek dalam kode Python dan data dalam database relasional. ORM memungkinkan pengembang untuk berinteraksi dengan database menggunakan objek dan metode Python, tanpa harus menulis query SQL secara langsung. Berikut adalah alasan mengapa model Django disebut ORM:
 1) Pemetaan Objek ke Tabel Database:
@@ -94,3 +96,52 @@ class Product(models.Model):
    name = models.CharField(max_length=100)
    price = models.DecimalField(max_digits=10, decimal_places=2)
    description = models.TextField()
+
+#  Tugas Individu 3 #
+#### Jelaskan mengapa kita memerlukan data delivery dalam pengimplementasian sebuah platform? ####
+- Interaksi pengguna dan sistem: Dalam website atau mobile app, ada interaksi antara user dan sistem melalui timbal balik pengiriman data. Data delivery memastikan input dikirim ke server, diproses, dan dikembalikan ke user. Oleh karena itu, tanpa data delivery yang efektif, interaksi antara user dan server dapat terganggu.
+- Integrasi sistem: Komponen Platform Services biasanya saling terhubung. Contohnya yaitu antara front-end dan back-end, dimana front-end yang mengirim request ke back-end dan back-end yang memproses dan mengirim response. Data delivery memastikan bahwa data bisa pindah dengan aman dan efisien antar sistem dan terjadi integrasi yang mulus.
+- Peningkatan efisiensi dan kecepatan: Data delivery yang efektif membuat platform bisa bekerja lebih cepat dan efisien. Apabila data dikirim dan diterima dengan cepat, user akan mendapatkan pengalaman yang responsif.
+- Peningkatan pengalaman user: Semakin cepat dan akurat data dikirim dan diterima, maka user juga akan mendapatkan pengalaman yang bagus.
+
+#### Menurutmu, mana yang lebih baik antara XML dan JSON? Mengapa JSON lebih populer dibandingkan XML? ####
+
+JSON lebih baik (dan lebih populer) karena beberapa alasan:
+- Better Readability, karena JSON memiliki format yang jauh lebih simpel dibanding XML yang menggunakan opening dan closing tag.
+- Ukuran file JSON biasanya lebih kecil karena tidak perlu banyak markup seperti XML. Hal ini membuat pengiriman data melalui jaringan menjadi lebih cepat dan efisien.
+- JSON lebih mudah di parse oleh JavaScript tanpa memerlukan library atau tools tambahan. Sedangkan parsing XML lebih rumit karena harus memeriksa opening dan closing tag serta struktur yang rumit.
+
+#### Jelaskan fungsi dari method is_valid() pada form Django dan mengapa kita membutuhkan method tersebut? ####
+
+is_valid() adalah method yang digunakan untuk memeriksa apakah data yang dikirim melalui form sesuai dengan aturan atau validasi yang telah ditentukan. Beberapa yang divalidasi, antara lain: 
+- Mengecek apakah semua field sudah diisi
+- Mengecek apakah tipe data input sesuai yang diharapkan
+- Mengecek apakah data yang di input memenuhi kriteria validasi khusus
+
+Mengapa kita membutuhkan is_valid()? Beberapa alasannya adalah sebagai berikut:
+- Mencegah data tidak valid masuk ke database
+- Menyediakan pesan error yang berbeda tergantung dari kesalahannya.
+- Memastikan data bersih sebelum diproses.
+- Dapat melakukan validasi custom.
+
+#### Mengapa kita membutuhkan csrf_token saat membuat form di Django? Apa yang dapat terjadi jika kita tidak menambahkan csrf_token pada form Django? Bagaimana hal tersebut dapat dimanfaatkan oleh penyerang? ####
+
+Dalam Django, csrf_token adalah bagian dari mekanisme CSRF (Cross-Site Request Forgery) protection, yang sangat penting untuk mencegah serangan jenis CSRF pada aplikasi web. CSRF (Cross-Site Request Forgery) adalah serangan di mana penyerang memanfaatkan kepercayaan antara pengguna dan server. Penyerang membuat permintaan ke server tanpa sepengetahuan pengguna, menggunakan kredensial pengguna yang sudah login, seperti cookie. Akibatnya, tindakan seperti mengubah data atau melakukan transaksi bisa terjadi tanpa persetujuan pengguna yang sah.
+
+csrf_token adalah token rahasia yang unik untuk setiap sesi pengguna. Django menambahkan token ini secara otomatis di semua form HTML yang melakukan POST request. Fungsi dari csrf_token adalah untuk memastikan bahwa permintaan yang dikirimkan dari form benar-benar berasal dari pengguna yang sah dan bukan dari situs pihak ketiga yang mencoba melakukan serangan CSRF.
+
+Berikut cara serangan CSRF dapat dieksekusi jika csrf_token tidak diterapkan:
+- Penyerang membuat form palsu di situs lain
+- Pengguna secara tidak sadar mengirimkan form
+- Karena tidak ada proteksi csrf_token, server memproses permintaan tersebut dan menyebabkan kerugian tanpa disadari pengguna.
+
+#### Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial). ####
+
+1) Membuat base.html sebagai kerangka / template
+2) Membuat input form
+   - Membuat forms.py dengan model ProductEntry yang menerima beberapa input: name, price, description
+   - Pada views.py, menambahkan create_product_entry yang mengarahkan user dari main page ke input page untuk mengisi produk, sekaligus validasi, memproses, dan menyimpan input. Apabila sudah, akan kembali ke main page.
+   - Membuat create_product_entry.html sebagai input page yang menampilkan input form
+   - Routing URL form input dengan menambahkan path URL tersebut ke urlpatterns di dalam urls.py
+3) Tambah 4 fungsi views baru untuk melihat entry dalam format yang berbeda, yaitu show_xml, show_json, show_xml_by_id, show_json_by_id
+4) Membuat routing URL dan masukkan ke urlpatterns dalam urls.py

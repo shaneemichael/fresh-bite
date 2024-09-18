@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="home">
+    <div class="form-container">
+        <h1 class="form-heading">Add New Product Entry</h1>
+        <form method="POST" class="product-form">
+            {% csrf_token %}
+            <table class="form-table">
+                {{ form.as_table }}
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" value="Add Product Entry" class="submit-button"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+
+<style>
+    .home {
+        background-color: #B2D2A4; 
+        min-height: 100vh; /* Full viewport height */
+        display: flex;
+        align-items: center; /* Center vertically */
+        justify-content: center; /* Center horizontally */
+        padding: 0; /* Remove extra padding */
+        margin: 0; /* Remove default margins */
+    }
+
+    /* Container for the form */
+    .form-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #f9f9f9; /* Light background for the form */
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+        width: 100%;
+        max-width: 600px; /* Limit the form width */
+    }
+
+    /* Heading styling */
+    .form-heading {
+        font-family: sans-serif;
+        color: #333; /* Darker color for readability */
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    /* Table inside the form */
+    .form-table {
+        width: 100%;
+        border-spacing: 10px;
+        margin-bottom: 20px;
+    }
+
+    /* Button styling */
+    .submit-button {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 25px;
+        font-size: 16px;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    /* Hover effect for the button */
+    .submit-button:hover {
+        background-color: #45a049; /* Darker green on hover */
+        transform: translateY(-3px); /* Slightly lift the button */
+    }
+
+    /* Focus and active states */
+    .submit-button:focus, 
+    .submit-button:active {
+        outline: none; /* Remove focus outline */
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); /* Stronger shadow when clicked */
+        transform: translateY(-2px);
+    }
+</style>
+{% endblock %}
