@@ -1,71 +1,63 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Freshbite2go - Vegetable Wraps</title>
 </head>
-<body class = "product_list">
+<body class="flex flex-col items-center bg-green-200 mt-6 text-green-800 text-xl">
     {% extends 'base.html' %}
     {% block content %}
-    {% if not product_entries %}
-    <p class = "empty-menu">Belum ada data produk pada Freshbite2go :D</p>
-    {% else %}
-    <table>
-    <tr class = "product-list">
-        <th>Product Name</th>
-        <th>Price</th>
-        <th>Description</th>
-    </tr>
+    {% include 'navbar.html' %}
 
-    {% comment %} Berikut cara memperlihatkan data product di bawah baris ini 
-    {% endcomment %} 
-    {% for product_entry in product_entries %}
-    <tr class = "product-list">
-        <td>{{product_entry.name}}</td>
-        <td>{{product_entry.price}}</td>
-        <td>{{product_entry.description}}</td>
-    </tr>
-    {% endfor %} 
-    </table>
+    {% if not product_entries %}
+    <p class="font-sans text-3xl text-green-800">Belum ada data produk pada Freshbite2go :D</p>
+    {% else %}
+    <div class="w-full max-w-[80%] my-20">
+        <div class="grid grid-cols-2 sm:grid-cols-4 bg-green-300 text-center py-2 px-4 font-bold">
+            <div class="py-2 px-4">Product Name</div>
+            <div class="py-2 px-4">Price</div>
+            <div class="py-2 px-4">Description</div>
+            <div class="py-2 px-4">Actions</div>
+        </div>
+        <div class="text-center py-2 px-4 divide-gray-200">
+            {% for product_entry in product_entries %}
+            <div class="grid grid-cols-2 sm:grid-cols-4 bg-white py-2 px-15 text-center gap-2">
+                <div class="py-2 px-4">{{product_entry.name}}</div>
+                <div class="py-2 px-4">{{product_entry.price}}</div>
+                <div class="py-2 px-4">{{product_entry.description}}</div>
+                <div class="py-2 px-4 flex flex-col md:flex-row space-x-0 md:space-x-2 justify-center items-center">
+                    <a href="{% url 'main:edit_product' product_entry.pk %}">
+                        <button class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-white hover:text-blue-600 hover:-translate-y-1 transition ease-in-out">
+                            Edit
+                        </button>
+                    </a>
+                    <a href="{% url 'main:delete_product' product_entry.pk %}">
+                        <button class="bg-red-500 text-white px-3 py-1 rounded hover:bg-white hover:text-red-600 hover:-translate-y-1 transition ease-in-out">
+                            Delete
+                        </button>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
     {% endif %}
 
     <br />
 
     <a href="{% url 'main:create_product_entry' %}">
-    <button class = "add-product">
-    Add New Product</button>
+        <button class="bg-green-500 text-white px-5 py-2 my-2 rounded hover:bg-green-600 shadow-md transform hover:-translate-y-1 transition ease-in-out">
+            Add New Product
+        </button>
     </a>
 
     <a href="{% url 'main:logout' %}">
-    <button>Logout</button>
+        <button class="bg-gray-500 text-white px-5 py-2 my-2 rounded hover:bg-gray-600 shadow-md transform hover:-translate-y-1 transition ease-in-out">
+            Logout
+        </button>
     </a>
 
-    <h5>Sesi terakhir login: {{ last_login }}</h5>
-
-    <style>
-        .empty-menu {
-            font: sans-serif; font-size: 30px; color: #175E17;
-        }
-        .product_list {
-            display: flex; flex-direction: column; align-items: center; margin: 0 auto; background-color: #B2D2A4;
-            margin: 5px 20px; color: #175E17; font-size: 20px;
-        }
-        .add-product {
-            background-color: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 25px; font-size: 16px; 
-            cursor: pointer; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: background-color 0.3s ease, transform 0.3s ease;
-        }
-        .add-product:hover {
-            background-color: #45a049; /* Change background color when hovered */
-            transform: translateY(-3px); /* Slightly lift the button */
-          }
-        .add-product:focus, 
-        .add-product:active {
-        outline: none; /* Remove default focus outline */
-        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); /* Add a stronger shadow on click */
-        transform: translateY(-2px); /* Make it pop when clicked */
-        }
-    </style>
-{% endblock content %}
+    <h5 class="mt-4">Sesi terakhir login: {{ last_login }}</h5>
+    {% endblock content %}
 </body>
 </html>
