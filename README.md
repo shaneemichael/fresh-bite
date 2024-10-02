@@ -397,8 +397,7 @@ Flexbox dan Grid Layout adalah dua modern layout system dalam CSS yang digunakan
 2) Kostumisasi page menggunakan Tailwind CSS
 3) Membuat `global.css` serta menambahkan folder `image` di dalam `main/static`
 4) Menambahkan konfigurasi static file dengan menambahkan whitenoise.middleware.WhiteNoiseMiddleware ke middleware, lalu menambahkan STATICFILES_DIRS dan juga STATIC_ROOT di `settings.py`
-5) Membuat navbar dan content yang reponsive, serta implementasi dropdown pada navbar menggunakan JavaScript.
- 
+5) Membuat navbar dan content yang reponsive, serta implementasi dropdown pada navbar menggunakan JavaScript. 
 
 
 
