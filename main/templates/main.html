@@ -6,11 +6,13 @@
 </head>
 <body class="flex flex-col items-center bg-[#FFCB32] mt-6 text-green-800 text-xl">
     {% extends 'base.html' %}
+    {% load static %}
     {% block content %}
     {% include 'navbar.html' %}
 
     {% if not product_entries %}
-    <p class="font-sans text-3xl text-green-800">Belum ada data produk pada Freshbite2go :D</p>
+    <p class="font-sans text-3xl text-green-800 mt-14">Belum ada data produk pada Freshbite2go :D</p>
+    <img src="{% static 'image/sad_sandwich.png' %}" alt="Sad face" class="w-32 h-32 mb-4 mt-10"/>
     {% else %}
     <div class="mx-4 my-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {% for product_entry in product_entries %}
