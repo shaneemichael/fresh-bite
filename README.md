@@ -258,8 +258,8 @@ Pada model `Product` yang terdapat di `main/models.py`, terdapat `user = models.
 2) Membuat dua akun pengguna dengan masing-masing tiga dummy data
    * Melakukan registrasi 2 akun pada page register kemudian login dan menambahkan 3 data pada page create-product-entry untuk masing-masing akun tersebut.
    Bukti:
-   ![empty_website](readme_components/Empty_Website.png)
-   ![filled_website](readme_components/Filled_Website.png)
+   ![empty_website](readme_components/Empty_Website_2.jpg)
+   ![filled_website](readme_components\Filled_Website_2.jpg)
 3) Menghubungkan model `Product` dengan `User`
    * Menambahkan user = `models.ForeignKey(User, on_delete=models.CASCADE)` dalam class `Product` pada `models.py` 
    * Melakukan migrasi model dengan langkah sebagai berikut:
