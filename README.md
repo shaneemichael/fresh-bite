@@ -1,4 +1,4 @@
-#### Link PWS: http:// ####
+#### Link PWS: http://pbp.cs.ui.ac.id/shane.michael/freshbite2go ####
 # Tugas Individu 2 #
 #### Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).####
 
