@@ -6,11 +6,11 @@
 
 {% block content %}
 {% include 'navbar.html' %}
-<div class="flex flex-col min-h-screen bg-gray-100">
+<div class="flex flex-col min-h-screen bg-[#FFCB32]">
   <div class="container mx-auto px-4 py-8 mt-16 max-w-xl">
     <h1 class="text-3xl font-bold text-center mb-8 text-black">Edit Product Entry</h1>
   
-    <div class="bg-white rounded-lg p-6 form-style">
+    <div class="bg-[#05A63A] rounded-lg p-6 form-style">
       <form method="POST" class="space-y-6">
           {% csrf_token %}
           {% for field in form %}
@@ -18,7 +18,7 @@
                   <label for="{{ field.id_for_label }}" class="mb-2 font-semibold text-gray-700">
                       {{ field.label }}
                   </label>
-                  <div class="w-full">
+                  <div class="w-full bg-[#ECF87F]">
                       {{ field }}
                   </div>
                   {% if field.help_text %}
@@ -30,7 +30,7 @@
               </div>
           {% endfor %}
           <div class="flex justify-center mt-6">
-              <button type="submit" class="bg-indigo-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-indigo-700 transition duration-300 ease-in-out w-full">
+              <button type="submit" class="bg-green-500 text-[#F2E437] font-semibold px-6 py-3 rounded-lg hover:bg-[#F2E437] hover:text-green-500 transition duration-300 ease-in-out w-full">
                   Edit Product Entry
               </button>
           </div>
