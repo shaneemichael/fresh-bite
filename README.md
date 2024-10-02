@@ -150,3 +150,262 @@ Berikut cara serangan CSRF dapat dieksekusi jika csrf_token tidak diterapkan:
 ![show_json](https://github.com/shaneemichael/fresh-bite/blob/main/components/show_json.png)
 ![show_xml_by_id](https://github.com/shaneemichael/fresh-bite/blob/main/components/show_xml_by_id.png)
 ![show_json_by_id](https://github.com/shaneemichael/fresh-bite/blob/main/components/show_json_by_id.png)
+
+
+# Tugas Individu 4 #
+#### Apa perbedaan antara `HttpResponseRedirect()` dan `redirect()` ####
+1) `HttpResponseRedirect()`
+   * Merupakan class bawaan dari Django yang akan mengembalikan response HTTP dengan status kode 302 (redirect)
+   * Mengharuskan pengguna untuk secara eksplisit memberikan URL yang lengkap atau jalur yang ingin Anda alihkan. URL tersebut bisa berupa string atau objek URL yang dihasilkan menggunakan `reverse()`
+   * Syntax: `HttpResponseRedirect(reverse("/url/"))`
+   * Contoh: 
+   ```
+   def login_user(request):
+   if request.method == 'POST':
+      form = AuthenticationForm(data=request.POST)
+
+    
+      if form.is_valid():
+         user = form.get_user()
+         login(request, user)
+         response = HttpResponseRedirect(reverse("main:show_main"))
+         response.set_cookie('last_login', str(datetime.datetime.now()))
+         return response
+   ```
+2) `redirect()`
+   * Merupakan shortcut function yang lebih fleksibel dibandingkan `HttpResponseRedirect()`. Pengguna bisa memasukkan URL, nama view, atau objek model, dan Django akan menangani konversi menjadi URL secara otomatis.
+   * Pengunaannya jauh lebih fleksibel dibandingkan dengan `HttpResponseRedirect()`.
+   * Syntax: redirect('/url/') (atau view, model, dll)
+   * Contoh:
+   ```
+   def create_product_entry(request):
+      form = ProductEntryForm(request.POST or None)
+
+      if form.is_valid() and request.method == "POST":
+         product_entry = form.save(commit=False)
+         product_entry.user = request.user
+         product_entry.save()
+         return redirect('main:show_main')
+   ```
+
+#### Jelaskan cara kerja penghubungan model `Product` dengan `User`! ####
+Berikut merupakan model `Product` dari `freshbite2go`:
+```
+class ProductEntry(models.Model):
+   user = models.ForeignKey(User, on_delete=models.CASCADE)
+   id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+   name = models.CharField(max_length=255)
+   price = models.IntegerField()
+   description = models.TextField()
+```
+Pada model `Product` yang terdapat di `main/models.py`, terdapat `user = models.ForeignKey(User, on_delete=models.CASCADE)` yang menghubungkan product dan user melalui `ForeignKey`. `ForeignKey` ini memiliki sifat many-to-one, sehingga setiap entry akan terhubung dengan satu pengguna. Product yang dibuat akan menyimpan reference dalam bentuk Foreign Key, sehingga setiap model juga hanya akan dimiliki oleh satu pengguna.
+
+#### Apa perbedaan antara authentication dan authorization, apakah yang dilakukan saat pengguna login? Jelaskan bagaimana Django mengimplementasikan kedua konsep tersebut. ####
+##### Perbedaan antara Authentication dan Authorization #####
+1) Authentication
+   Authentication adalah proses untuk memverifikasi identitas seseorang. Ini berarti memastikan bahwa pengguna merupakan orang yang benar / valid, misalnya dengan menggunakan kredensial seperti username dan password.
+2) Authorization
+   Authorization adalah proses untuk menentukan hak akses pengguna terhadap sumber daya atau fitur tertentu. Setelah pengguna terotentikasi, sistem perlu memastikan pengguna tersebut memiliki izin yang sesuai untuk mengakses fitur atau data tertentu. Misal, `admin` dan `customer` hanya bisa mengakses 2 komponen yang berbeda.
+
+##### Apakah yang dilakukan saat pengguna login? #####
+1) Authentication
+   Saat pengguna login, proses authentication dilakukan. Sistem akan memeriksa kredensial yang dimasukkan (username dan password) terhadap data yang tersimpan dalam database. Jika data cocok, pengguna dianggap terotentikasi dan dapat masuk ke sistem.
+2) Authorization
+   Setelah login (authentication), proses authorization dijalankan untuk menentukan apa yang diizinkan bagi pengguna tersebut. Misalnya, apakah pengguna bisa mengakses halaman admin atau mengedit data tertentu berdasarkan perannya.
+
+##### Implementasi pada Django #####
+1) Authentication
+   * Django melakukan otentikasi pengguna melalui django.contrib.auth. Modul ini menyediakan fungsi-fungsi untuk login, logout, dan session management.
+   * Setelah pengguna berhasil login menggunakan login(request, user), status pengguna tersimpan dalam sesi dan Django dapat mengenali pengguna di setiap request berikutnya.
+2) Authorization
+   * Django menggunakan sistem permissions untuk menentukan akses pengguna. Setiap model bisa memiliki izin standar seperti add, change, dan delete, yang bisa dikaitkan dengan pengguna atau group.
+
+#### Bagaimana Django mengingat pengguna yang telah login? Jelaskan kegunaan lain dari cookies dan apakah semua cookies aman digunakan? ####
+1) Session Cookies:
+   * Setelah pengguna berhasil login, Django menciptakan sebuah session untuk pengguna tersebut. Session ini menyimpan informasi tentang identitas pengguna di sisi server.
+   * Django kemudian mengirimkan sebuah cookie sesi (session cookie) ke browser pengguna. Cookie ini berisi ID sesi (session ID), yang merupakan referensi unik untuk mencocokkan pengguna dengan sesi yang tersimpan di server.
+   * Setiap kali pengguna melakukan request baru, cookie ini dikirim bersama dengan request tersebut, memungkinkan Django untuk mengenali pengguna yang sudah login berdasarkan session ID.
+2) Fungsi login():
+   * Saat pengguna login menggunakan fungsi login(request, user), Django menyimpan session ID di cookies browser. Session ini juga dihubungkan dengan pengguna di basis data.
+   * Django menggunakan backend session framework untuk menyimpan data sesi. Secara default, data sesi disimpan di database, tetapi juga bisa disimpan di file, cache, atau lainnya tergantung konfigurasi.
+   Contoh:
+   ```
+   def login_user(request):
+      if request.method == 'POST':
+         form = AuthenticationForm(data=request.POST)
+
+    
+         if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            response = HttpResponseRedirect(reverse("main:show_main"))
+            response.set_cookie('last_login', str(datetime.datetime.now()))
+            return response
+
+      else:
+         form = AuthenticationForm(request)
+      context = {'form': form}
+      return render(request, 'login.html', context)
+   ```
+
+#### Implementasi checklist secara step-by-step ####
+1) Mengimplementasikan fungsi register, login, dan logout.
+   * Membuat login.html dan register.html dengan method nya adalah POST
+   * Menambahkan @login_required(login_url='/login') di atas method show_main di views.py
+   * Membuat fungsi register di views.py yang memanggil UserCreationForm() dan menyimpan form yang akan membuat pengguna pindah ke login page.
+   * Membuat fungsi user_login yang memanggil AuthenticationForm(data=request.POST) yang akan mendapatkan user kemudian akan menyimpan cookie dan mengarahkan user ke front page
+   * Membuat fungsi logout_user untuk menghapus cookie sebelumnya dan mengarahkan ke page login.
+   * Mengimport semua fungsi tersebut dan Menambahkan path yang sesuai pada urls.py
+2) Membuat dua akun pengguna dengan masing-masing tiga dummy data
+   * Melakukan registrasi 2 akun pada page register kemudian login dan menambahkan 3 data pada page create-product-entry untuk masing-masing akun tersebut.
+   Bukti:
+3) Menghubungkan model `Product` dengan `User`
+   * Menambahkan user = `models.ForeignKey(User, on_delete=models.CASCADE)` dalam class `Product` pada `models.py` 
+   * Melakukan migrasi model dengan langkah sebagai berikut:
+   ``` 
+   python manage.py makemigrations
+   python manage.py migrate
+   ```
+4) Menampilkan detail pengguna yang sedang login dan menerapkan cookies 
+   * Memastikan pengguna sudah login sebelum mengakses web dengan menambahkan `@login_required` di views.py
+   * Mengambil data pengguna yang sedang login menggunakan request.user
+   * Set cookies saat user login dengan menambahkan `'last_login': request.COOKIES['last_login']`
+
+
+# Tugas Individu 5 #
+#### Urutan prioritas pengambilan CSS selector ####
+Dalam CSS, jika suatu elemen HTML memiliki beberapa selector yang berlaku, maka urutan prioritas atau specificity menentukan gaya mana yang diterapkan. Urutan tersebut adalah sebagai berikut:
+1) Inline styles: Gaya yang ditulis langsung di elemen HTML menggunakan atribut `style=""` akan memiliki prioritas tertinggi.
+   Contoh:
+   ```
+   <h1 style="color: red;">Title</h1>
+   ```
+2) ID Selector: Selector yang menggunakan ID dari elemen akan memiliki prioritas tinggi. Setiap elemen di HTML hanya boleh memiliki satu ID yang unik.
+   Contoh:
+   ```
+   #header { color: blue; }
+   ```
+3) Class, Pseudo-Class, dan Attribute Selector: Selector yang menggunakan class, pseudo-class (seperti `:hover`, `:focus`), atau attribute (misalnya `[type="text"]`) memiliki prioritas lebih rendah daripada ID Selector, tetapi lebih tinggi dari Element Selector.
+   Contoh:
+   ```
+   .menu { color: green; }
+   input[type="text"] { color: black; }
+   ```
+4) Type Selector dan Pseudo-Element Selector: Selector yang menggunakan nama elemen HTML (seperti `h1`, `p`, `div`) atau pseudo-element (seperti `::before`, `::after`) memiliki prioritas paling rendah.
+   Contoh:
+   ```
+   h1 { color: yellow; }
+   p { color: purple; }
+   ```
+5) Important Rule (`!important`)
+   Gaya yang ditandai dengan !important akan mengalahkan semua aturan lain, terlepas dari urutan prioritas atau specificity. Namun, jika ada beberapa gaya dengan `!important`, urutan specificity masih berlaku.
+   Contoh:
+   ```
+   p { color: green !important; }
+   ```
+#### Pentingnya Responsive Web Design ####
+Pengguna mengakses web dari perangkat yang berbeda-beda. Oleh karena itu, penting adanya kemampuan pada web untuk mampu menyesuaikan tampilan sesuai dengan perangkat pengguna. Hal ini karena:
+1) Memberikan pengalaman pengguna yang konsisten
+   Dengan responsive design, tampilan dan fungsionalitas web akan otomatis menyesuaikan dengan perangkat pengguna, memberikan pengalaman yang nyaman tanpa harus memperbesar/memperkecil atau menggulir secara horizontal. Ini meningkatkan user experience (UX) di berbagai perangkat.
+2) Accessibility yang lebih luas
+   Pengguna mobile terus meningkat, sehingga memastikan situs web mudah diakses dari berbagai perangkat akan meningkatkan aksesibilitas dan potensi audiens. Jika situs tidak responsif, pengguna mobile cenderung meninggalkan situs dan beralih ke yang lebih nyaman.
+3) SEO (Search Engine Optimization)
+   Google mengutamakan situs yang responsif dalam hasil pencarian mobile, sehingga responsive design berperan penting dalam peningkatan SEO. 
+4) Efisiensi pengembangan dan pemeliharaan
+   Daripada membuat versi terpisah dari situs untuk desktop dan mobile, menggunakan responsive design memungkinkan developer untuk memelihara satu basis kode untuk semua ukuran layar. Ini menghemat waktu dan biaya dalam pengembangan dan pemeliharaan jangka panjang.
+
+Contoh aplikasi yang sudah dan belum menerapkan Responsive Web Design:
+* Sudah: Airbnb, Twitter, Instagram, Facebook
+* Belum: Beberapa website pemerintah
+
+#### Perbedaan antara margin, border, dan padding, serta cara implementasinya ####
+1) Margin
+   Margin adalah ruang di luar elemen. Ini menentukan jarak antara elemen satu dengan elemen lainnya. Margin tidak mempengaruhi konten atau ukuran elemen, tetapi hanya mengatur jarak antara elemen tersebut dengan elemen di sekitarnya.
+   Contoh:
+   ```
+   div {
+      margin: 20px; /* Memberikan margin 20px di semua sisi */
+   }
+   ```
+2) Border
+   Border adalah garis yang mengelilingi elemen. Border ini terletak di antara margin dan padding. Border bisa diatur tebalnya, jenis garisnya (solid, dashed, dll.), serta warnanya.
+   Contoh:
+   ```
+   div {
+      border-top: 2px dashed blue;  
+      border-right: 3px solid green; 
+      border-bottom: 1px dotted red; 
+      border-left: 4px double orange; 
+   }
+   ```
+3) Padding
+   Padding adalah ruang di dalam elemen, di antara konten elemen dan border. Padding mengatur jarak antara konten elemen (seperti teks atau gambar) dengan batas elemen (border).
+   Contoh:
+   ```
+   div {
+      padding-top: 5px;    
+      padding-right: 10px;  
+      padding-bottom: 15px; 
+      padding-left: 20px;   
+   }
+   ```
+
+#### Konsep flex box dan grid layout serta kegunaannya ####
+Flexbox dan Grid Layout adalah dua modern layout system dalam CSS yang digunakan untuk mengatur layout website dengan lebih fleksibel dan efisien. 
+1) Flexbox
+   Flexbox dirancang untuk tata letak satu dimensi (baik secara horizontal atau vertikal). Ini sangat baik untuk mengatur elemen-elemen dalam satu baris atau kolom. Flexbox memungkinkan elemen-elemen dalam kontainer untuk mengatur posisi, ukuran, dan orientasi mereka dengan fleksibilitas, bahkan jika ukurannya tidak pasti atau berubah-ubah.
+   Contoh:
+   ```
+   .container {
+      display: flex; /* Mengaktifkan Flexbox pada elemen kontainer */
+      justify-content: center; /* Mengatur elemen anak agar berada di tengah secara horizontal */
+      align-items: center; /* Mengatur elemen anak agar berada di tengah secara vertikal */
+      height: 300px;
+   }
+   .item {
+      background-color: lightblue;
+      padding: 20px;
+   }
+
+2) Grid Layout
+   Grid Layout dirancang untuk tata letak dua dimensi (baris dan kolom). Ini memberikan kontrol penuh atas penempatan elemen pada grid, memungkinkan desainer untuk membuat tata letak yang rumit dengan lebih mudah. Grid Layout lebih baik daripada Flexbox ketika tata letak yang melibatkan baris dan kolom secara simultan dibutuhkan.
+   Contoh:
+   ```
+   .container {
+      display: grid; /* Mengaktifkan grid layout */
+      grid-template-columns: repeat(3, 1fr); /* Membuat 3 kolom dengan lebar yang sama */
+      grid-template-rows: auto; /* Membuat baris yang menyesuaikan tinggi elemen */
+      gap: 10px; /* Jarak antar elemen */
+   }
+   .item {
+      background-color: lightgreen;
+      padding: 20px;
+   }
+   ```
+   ```
+   <div class="container">
+      <div class="item">Item 1</div>
+      <div class="item">Item 2</div>
+      <div class="item">Item 3</div>
+      <div class="item">Item 4</div>
+      <div class="item">Item 5</div>
+      <div class="item">Item 6</div>
+   </div>
+   ```
+#### Implementasi Checklist Secara Step-by-Step ####
+1) Menambahkan fungsi `edit_product` dan `delete_product` yang menerima parameter `request` dan `id` ke `views.py` kemudian menambahkan path nya di `urls.py`
+2) Kostumisasi page menggunakan Tailwind CSS
+3) Membuat `global.css` serta menambahkan folder `image` di dalam `main/static`
+4) Menambahkan konfigurasi static file dengan menambahkan whitenoise.middleware.WhiteNoiseMiddleware ke middleware, lalu menambahkan STATICFILES_DIRS dan juga STATIC_ROOT di `settings.py`
+5) Membuat navbar dan content yang reponsive, serta implementasi dropdown pada navbar menggunakan JavaScript.
+ 
+
+
+
+
+
+
+
+
+
+
