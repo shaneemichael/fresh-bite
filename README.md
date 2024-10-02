@@ -42,7 +42,7 @@ Setelah semua langkah selesai, lakukan git add, commit, dan push ke GitHub serta
 
 #### Buatlah bagan yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara `urls.py`, `views.py`, `models.py`, dan berkas `html`.####
 
-![Bagan Django](https://github.com/shaneemichael/fresh-bite/blob/main/components/bagan_django.jpeg)
+![Bagan Django](readme_components/bagan_django.jpeg)
 
 Penjelasan:
 Permintaan dari klien pertama kali diproses oleh urls.py, yang akan mencocokkan URL tersebut dengan fungsi view yang tepat di views.py. Di dalam views.py, logika aplikasi dijalankan dan jika diperlukan data dari database, fungsi view akan memanggil model yang ada di models.py. Setelah data diambil, view akan menyiapkan template HTML dengan data tersebut dan merendernya. Akhirnya, halaman web atau respons JSON dikirim kembali ke browser klien.
@@ -146,11 +146,10 @@ Berikut cara serangan CSRF dapat dieksekusi jika csrf_token tidak diterapkan:
 3) Tambah 4 fungsi views baru untuk melihat entry dalam format yang berbeda, yaitu show_xml, show_json, show_xml_by_id, show_json_by_id
 4) Membuat routing URL dan masukkan ke urlpatterns dalam urls.py
 
-![show_xml](https://github.com/shaneemichael/fresh-bite/blob/main/components/show_xml.png)
-![show_json](https://github.com/shaneemichael/fresh-bite/blob/main/components/show_json.png)
-![show_xml_by_id](https://github.com/shaneemichael/fresh-bite/blob/main/components/show_xml_by_id.png)
-![show_json_by_id](https://github.com/shaneemichael/fresh-bite/blob/main/components/show_json_by_id.png)
-
+![show_xml](readme_components/show_xml.png)
+![show_json](readme_components/show_json.png)
+![show_xml_by_id](readme_components/show_xml_by_id.png)
+![show_json_by_id](readme_components/show_json_by_id.png)
 
 # Tugas Individu 4 #
 #### Apa perbedaan antara `HttpResponseRedirect()` dan `redirect()` ####
@@ -259,6 +258,8 @@ Pada model `Product` yang terdapat di `main/models.py`, terdapat `user = models.
 2) Membuat dua akun pengguna dengan masing-masing tiga dummy data
    * Melakukan registrasi 2 akun pada page register kemudian login dan menambahkan 3 data pada page create-product-entry untuk masing-masing akun tersebut.
    Bukti:
+   ![empty_website](readme_components/Empty_Website.png)
+   ![filled_website](readme_components/Filled_Website.png)
 3) Menghubungkan model `Product` dengan `User`
    * Menambahkan user = `models.ForeignKey(User, on_delete=models.CASCADE)` dalam class `Product` pada `models.py` 
    * Melakukan migrasi model dengan langkah sebagai berikut:
