@@ -8,9 +8,10 @@
 
 {% block content %}
 {% include 'navbar.html' %}
-<div class="flex flex-col items-center bg-[#FFCB32] mt-6 text-green-800 text-xl">
+<body class="flex flex-col items-center bg-[#FFCB32] mt-6 text-green-800 text-xl">
     
-
+    <img src="{% static 'static/image/main_page_pic.jpg' %}" alt="Sandwich Picture" class="w-32 h-32 mb-4"/>
+    
     <div id="product_entry_cards"></div>
 
     <div id="crudModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 w-full flex items-center justify-center bg-gray-800 bg-opacity-50 overflow-x-hidden overflow-y-auto transition-opacity duration-300 ease-out">
@@ -212,6 +213,6 @@
         
         refreshProductEntries();
     </script>
-</div>
+</body>
 </html>
 {% endblock content %}
