@@ -9,17 +9,18 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+from django.utils.html import strip_tags
 
 # Create your views here.
 @login_required(login_url='/login')
 def show_main(request):
-    product_entries = ProductEntry.objects.filter(user=request.user)
 
     context = {
         'app_name' : 'freshbite2go',
         'name': request.user.username,
         'class': 'PBP E',
-        'product_entries': product_entries,
         'last_login': request.COOKIES['last_login'],
     }
 
@@ -38,13 +39,28 @@ def create_product_entry(request):
     context = {'form': form}
     return render(request, "create_product_entry.html", context)
 
+@csrf_exempt
+@require_POST
+def add_product_entry_ajax(request):
+    form = ProductEntryForm(request.POST)
+    
+    if form.is_valid():
+        product = form.save(commit=False)  # Save the product without committing yet
+        product.user = request.user  # Set the user manually
+        product.save()  # Now save it
+        return HttpResponse("CREATED", status=201)
+    else:
+        # Send back an error message with status 400
+        error_message = ', '.join([f"{field}: {error[0]}" for field, error in form.errors.items()])
+        return HttpResponse(f"Error: {error_message}", status=400)
+
 
 def show_xml(request):
-    data = ProductEntry.objects.all()
+    data = ProductEntry.objects.filter(user=request.user)
     return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
 
 def show_json(request):
-    data = ProductEntry.objects.all()
+    data = ProductEntry.objects.filter(user=request.user)
     return HttpResponse(serializers.serialize("json", data), content_type='application/json')
 
 def show_xml_by_id(request, id):
@@ -78,6 +94,9 @@ def login_user(request):
             response = HttpResponseRedirect(reverse("main:show_main"))
             response.set_cookie('last_login', str(datetime.datetime.now()))
             return response
+        
+        else:
+            messages.error(request, "Invalid username or password. Please try again.")
 
     else:
         form = AuthenticationForm(request)
