@@ -401,12 +401,99 @@ Flexbox dan Grid Layout adalah dua modern layout system dalam CSS yang digunakan
 4) Menambahkan konfigurasi static file dengan menambahkan whitenoise.middleware.WhiteNoiseMiddleware ke middleware, lalu menambahkan STATICFILES_DIRS dan juga STATIC_ROOT di `settings.py`
 5) Membuat navbar dan content yang reponsive, serta implementasi dropdown pada navbar menggunakan JavaScript. 
 
+# Tugas Individu 6 #
+#### Manfaat dari penggunaan JavaScript dalam pengembangan aplikasi web ####
+1) Interaktivitas: JavaScript memungkinkan pengembang untuk menambahkan elemen interaktif pada halaman web, seperti animasi responsif terhadap input pengguna, dan manipulasi DOM (Document Object Model).
+2) Pengembangan Front-End dan Back-End: Dengan munculnya Node.js, JavaScript dapat digunakan baik di sisi klien (front-end) maupun sisi server (back-end), memungkinkan pengembang untuk menggunakan satu bahasa untuk seluruh aplikasi.
+3) Kecepatan dan Performa: JavaScript berjalan langsung di browser, yang memungkinkan pemrosesan cepat tanpa memerlukan komunikasi berulang dengan server.
 
+#### Fungsi dari penggunaan `await` ketika kita menggunakan `fetch()` dan hal yang akan terjadi jika tidak menggunakan `await` ####
+* Fungsi `await` dengan `fetch()`: Apabila menggunakan `await` sebelum `fetch()`, JavaScript akan menunggu hingga permintaan selesai dan respons diterima sebelum melanjutkan eksekusi kode berikutnya.
+* Apabila program mencoba mengakses data sebelum respons diterima, ini dapat mengakibatkan kesalahan atau nilai undefined, karena data belum ada pada saat program mencoba untuk menggunakannya.
+ 
+#### Perlunya penggunaan decorator `csrf_exempt` pada view yang akan digunakan untuk AJAX `POST` ####
+CSRF (Cross Site Request Forgery) adalah jenis serangan di mana jahat pihak bisa mengirim permintaan tidak sah ke server atas nama pengguna yang sudah terautentikasi. Untuk mencegah ini, Django secara otomatis memeriksa token CSRF pada setiap permintaan POST dengan menggunakan `csrf_exempt`. Dalam kasus ini, `csrf_exempt` digunakan untuk mencegah dilakukannya CSRF waktu pengisian form penambahan produk. Kita dapat menggunakan `csrf_exempt` karena autentikasi sudah dilakukan dan kita yakin bahwa input tersebut valid. 
 
+#### Alasan pembersihan data input dilakukan di belakang pengguna (backend), bukan di frontend ####
+1) Keamanan Data: Data dari frontend bisa dimanipulasi oleh pengguna, seperti CSRF, XSS, dan lainnya. Seorang penyerang bisa dengan mudah mengabaikan validasi di sisi klien. Dengan melakukan pembersihan di backend, kita menambah lapisan keamanan yang mencegah data yang tidak valid atau berbahaya masuk ke sistem.
+2) Validasi yang Konsisten: Jika validasi hanya dilakukan di frontend, maka ada risiko ketidakcocokan antara apa yang dilakukan di frontend dan backend. Melakukan pembersihan dan validasi di backend menjamin konsistensi dalam cara data diproses.
 
+#### Implementasi Checklist secara step-by-step ####
+1) Mengubah kode cards data product agar dapat mendukung AJAX `GET`
+   * Mengubah pengambilan data dari menggunakan django for loop menjadi menggunakan javascript
+      ```
+      document.getElementById("product_entry_cards").className = classNameString;
+      document.getElementById("product_entry_cards").innerHTML = htmlString;
+      ```
 
+2) Melakukan pengambilan data product menggunakan AJAX `GET`. Memaastikan bahwa data yang diambil hanyalah data milik pengguna yang logged-in.
+   * Menambahkan asynchronous function pada `main.html` untuk fetch data menggunakan JSON.
+      ```
+         async function getProductEntries(){
+               return fetch("{% url 'main:show_json' %}").then((res) => res.json())
+         }
+      ``` 
+      
+3) Membuat sebuah tombol yang membuka sebuah modal dengan form untuk menambahkan mood. 
+   ``` 
+   <button data-modal-target="crudModal" data-modal-toggle="crudModal" class="btn bg-green-600 text-white hover:bg-white hover:text-green-600 font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105" onclick="showModal();">
+        Add New Product Entry by AJAX
+    </button>
+   ```
 
+4) Membuat fungsi view baru untuk menambahkan product baru ke dalam basis data.
+   Membuat fungsi add_product_entry_ajax yang sudah tedapat strip tag dengan method POST dan mengembalikan HttpResponse(status=201) jika berhasil.
 
+5) Membuat path /create-ajax/ yang mengarah ke fungsi view yang baru dibuat.
+   * Menambahkan path tersebut kedalam `import` dan juga `urlpatterns` di `views.py`
+      ```
+      from main.views import add_product_entry_ajax
+      ...
+      urlpatterns = [
+         ...
+         path('create-product-entry-ajax', add_product_entry_ajax, name='add_product_entry_ajax'),
+      ]
+      ```
 
+6) Menghubungkan form yang telah kamu buat di dalam modal kamu ke path /create-ajax/. Selain itu, menambahkan error handling (terjadi karena perlindungan terhadap XSS / Cross-Site Scripting tidak berjalan dengan seharusnya)
+   ```
+   function addProductEntry() {
+      fetch("{% url 'main:add_product_entry_ajax' %}", {
+         method: "POST",
+         body: new FormData(document.querySelector('#productEntryForm')),
+      })
+      .then(response => {
+         if (response.ok) {
+            refreshProductEntries();
+            document.getElementById("productEntryForm").reset();
+            hideModal(); // Hide modal if successful
+         } else {
+            return response.text(); // Capture the error message
+         }
+      })
+      .then(errorMessage => {
+         if (errorMessage) {
+            alert(errorMessage); // Show error message to the user
+         }
+      })
+      .catch(error => {
+         console.error("Error:", error);
+      });
 
+      return false;
+   }
+   ```
+7) Melakukan refresh pada halaman utama secara asinkronus untuk menampilkan daftar mood terbaru tanpa reload halaman utama secara keseluruhan.  
+   * Membuat fungsi refreshProductEntries() untuk memperbarui halaman, lalu mengintegrasikan fungsi ini ke dalam fungsi addProductEntry() sehingga ketika tombol submit ditekan, produk baru akan masuk, sekaligus me-refresh page tersebut.
+      ```
+      function addProductEntry() {
+         fetch("{% url 'main:add_product_entry_ajax' %}", {
+            method: "POST",
+            body: new FormData(document.querySelector('#productEntryForm')),
+         })
+         ...
+      }
+      ...
+      refreshProductEntries();
+      ```
 
